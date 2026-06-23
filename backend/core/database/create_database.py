@@ -1,14 +1,20 @@
-from sqlalchemy_utils import database_exists, create_database
-import os
+from psycopg import AsyncConnection
 from dotenv import load_dotenv
+from psycopg.errors import DuplicateDatabase
+import os
 
-def create_db():
+async def create_db():
     load_dotenv()
-    url_database = os.getenv("DATABASE_URL",)
+    base_url = os.getenv("BASE_URL")
 
-    if not database_exists(url_database):
-        create_database(url_database)
-        print("Banco criado com sucesso!")
-    
-    return url_database
+    try:
+        async with await AsyncConnection.connect(base_url, autocommit=True) as conn:
+            db_name = os.getenv('DATABASE_NAME')
+            await conn.execute(f'CREATE DATABASE {db_name}')
+            print(f"Banco {db_name} criado!")
 
+    except DuplicateDatabase:
+       print("Banco já existe")
+
+    except Exception as e:
+        print(f"Erro ao criar banco de dados :{e}")
