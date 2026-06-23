@@ -1,6 +1,6 @@
 from sqlalchemy import Column, String, Integer, Boolean
 from sqlalchemy.orm import relationship
-from core.database import Base
+from core.database.connect import Base
 
 class ManagementType(Base):
 
