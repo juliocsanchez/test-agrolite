@@ -2,7 +2,10 @@ from pydantic import BaseModel
 
 class AnimalCreate(BaseModel):
 
-    id : int    
+    code : str
     species : str
 
-
+class AnimalResponse(AnimalCreate):
+    id : int
+    class Config:
+        from_atributtes = True

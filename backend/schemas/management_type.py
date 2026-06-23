@@ -3,14 +3,12 @@ from typing import Optional
 
 class ManagementTypeCreate(BaseModel):
 
-    id: int
     type_name : str
     is_recurrent : bool
     description : str
     days_interval : Optional[int] = None
 
     @model_validator(mode="after")
-    @classmethod
     def validate_interval(self):
 
         if self.is_recurrent and self.days_interval == None:
@@ -24,6 +22,10 @@ class ManagementTypeCreate(BaseModel):
         
         return self
 
+class ManagementTypeResponse(ManagementTypeCreate):
+    id : int
+    class Config:
+        from_atributtes = True
 
 
 
