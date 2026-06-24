@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 import datetime
 
-class ManagementEventCreate(BaseModel):
+class ManagementEventBase(BaseModel):
 
     type_id : int
     animal_id : int 
@@ -10,7 +10,7 @@ class ManagementEventCreate(BaseModel):
     description : Optional[str] = None
     photo_url : Optional[str] = None
 
-class ManagementEventResponse(ManagementEventCreate):
+class ManagementEventResponse(ManagementEventBase):
     id: int
     class Config:
         from_attributes = True

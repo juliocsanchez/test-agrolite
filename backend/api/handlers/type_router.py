@@ -11,14 +11,14 @@ types_router = APIRouter()
 async def read_types(db:AsyncSession = Depends(get_bd)):
     return await ManagementTypeService.read(db)
 
-@types_router.post("/create",summary="Criar um tipo de manejamento",response_model=ManagementTypeResponse)
+@types_router.post("/create",summary="Cria um tipo de manejamento",response_model=ManagementTypeResponse)
 async def create_type(management_type:ManagementTypeCreate,db:AsyncSession = Depends(get_bd)):
     return await ManagementTypeService.create(db,management_type)
 
-@types_router.put("/{id}",summary="Atualizar um tipo de manejamento",response_model=ManagementTypeResponse)
+@types_router.put("/{id}",summary="Atualiza um tipo de manejamento",response_model=ManagementTypeResponse)
 async def update_type(management_type: ManagementTypeUpdate,type_id:int,db:AsyncSession = Depends(get_bd)):
     return await ManagementTypeService.update(db,type_id,management_type)
 
-@types_router.delete("/{id}",summary="Deletar um tipo de manejamento")
+@types_router.delete("/{id}",summary="Deleta um tipo de manejamento")
 async def delete_type(type_id:int,db:AsyncSession = Depends(get_bd)):
     return await ManagementTypeService.delete(db,type_id)
