@@ -1,4 +1,5 @@
 from fastapi import HTTPException, status
+from models.management_event import ManagementEvent
 from models.animal import Animal
 from schemas.animal import AnimalCreate, AnimalUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -58,3 +59,8 @@ class AnimalService:
          
          return HTTPException(status_code=status.HTTP_204_NO_CONTENT,detail="Animal deletado com sucesso")
          
+    @staticmethod
+    async def history(db:AsyncSession,id:int):
+          query = select(ManagementEvent).where(ManagementEvent.animal_id==id)
+          res = await db.execute(query)
+          return res.scalars().all()

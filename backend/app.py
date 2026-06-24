@@ -12,3 +12,8 @@ async def lifespan(app:FastAPI):
 app = FastAPI(lifespan=lifespan)
 app.include_router(router=router)
 
+@app.get("/")
+def hello():
+    return{
+        "msg" : "Bem-vindo a API agrolite_management"
+    }

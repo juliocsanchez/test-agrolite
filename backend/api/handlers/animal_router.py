@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends
+from schemas.management_event import ManagementEventHistory
 from schemas.animal import AnimalCreate,AnimalResponse, AnimalUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.animal_service import AnimalService
@@ -11,7 +12,9 @@ animal_router = APIRouter()
 async def list_animals(db: AsyncSession = Depends(get_bd)):
     return await AnimalService.read(db)
 
-# TODO listar historico de manejo por animal
+@animal_router.get("/history/{id}", summary="Lista de manejos por animal",response_model=List[ManagementEventHistory])
+async def get_history(id:int,db: AsyncSession = Depends(get_bd)):
+    return await AnimalService.history(db,id)
 
 @animal_router.post("/create",summary="Cadastra um novo animal",response_model=AnimalResponse)
 async def create_animal(animal:AnimalCreate, db: AsyncSession = Depends(get_bd)):
@@ -22,5 +25,5 @@ async def update_animal(animal:AnimalUpdate,animal_id:int, db: AsyncSession = De
     return await AnimalService.update(db,animal,animal_id)
 
 @animal_router.delete("/{id}",summary = "Deleta um animal")
-async def delete_animal(animal_id:int, db: AsyncSession = Depends(get_bd)):
-    return await AnimalService.delete(db,animal_id)
+async def delete_animal(id:int, db: AsyncSession = Depends(get_bd)):
+    return await AnimalService.delete(db,id)

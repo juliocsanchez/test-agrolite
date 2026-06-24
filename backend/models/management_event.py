@@ -1,4 +1,5 @@
 from sqlalchemy import Column, String, Integer, ForeignKey, Date
+from sqlalchemy import UniqueConstraint
 from sqlalchemy.orm import relationship
 from core.database.connect import Base
 
@@ -14,4 +15,6 @@ class ManagementEvent(Base):
     photo_url = Column(String(255),nullable=True)
     type = relationship("ManagementType",back_populates="events")
     animal = relationship("Animal",back_populates="events")
+
+    __table_args__ = (UniqueConstraint("animal_id","type_id","management_date", name="uq_animal_managemnt_date"),)
 
