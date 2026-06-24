@@ -7,7 +7,7 @@ class ManagementEventCreate(BaseModel):
     type_id : int
     animal_id : int 
     management_date : datetime.date
-    description : str 
+    description : Optional[str] = None
     photo_url : Optional[str] = None
 
 class ManagementEventResponse(ManagementEventCreate):

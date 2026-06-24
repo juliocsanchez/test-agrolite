@@ -8,8 +8,8 @@ class AnimalCreate(BaseModel):
 
 class AnimalUpdate(BaseModel):
     
-    code : Optional[str] 
-    species : Optional[str] 
+    code : Optional[str] = None
+    species : Optional[str] = None
 
 class AnimalResponse(AnimalCreate):
     id : int
