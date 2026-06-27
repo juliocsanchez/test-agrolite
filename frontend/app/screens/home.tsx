@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import Card from "@/components/cards_create";
+import AnimalsCard from "@/components/cards_animal";
 
 export default function Index() {
   return (
