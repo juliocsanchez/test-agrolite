@@ -1,18 +1,24 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Text, TouchableOpacity, View } from "react-native";
-import { router, Href } from "expo-router";
+import { router } from "expo-router";
 
 interface AnimalCardProps {
+  id: number;
   specie: string;
   code: string;
-  href: Href;
 }
 
-export default function AnimalsCard({ specie, code, href }: AnimalCardProps) {
+export default function AnimalsCard({ specie, code, id }: AnimalCardProps) {
+  const handleAnimalHistory = () => {
+    router.push({
+      pathname: "/forms/history",
+      params: { animal_id: id },
+    });
+  };
   return (
     <TouchableOpacity
       className="w-full flex-row items-center gap-3 rounded-2xl border border-gray-100 bg-white p-4 shadow-md"
-      onPress={() => router.push(href)}
+      onPress={handleAnimalHistory}
     >
       <FontAwesome6 name="cow" size={60} />
       <View className="flex-col">

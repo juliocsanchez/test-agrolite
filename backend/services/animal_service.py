@@ -1,9 +1,11 @@
 from fastapi import HTTPException, status
+from schemas.management_event import ManagementEventHistory
 from models.management_event import ManagementEvent
 from models.animal import Animal
 from schemas.animal import AnimalCreate, AnimalUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import joinedload
 from sqlalchemy import select
 
 class AnimalService:
@@ -61,6 +63,21 @@ class AnimalService:
          
     @staticmethod
     async def history(db:AsyncSession,id:int):
-          query = select(ManagementEvent).where(ManagementEvent.animal_id==id)
-          res = await db.execute(query)
-          return res.scalars().all()
+     query = (
+          select(ManagementEvent)
+          .options(joinedload(ManagementEvent.type)) 
+          .where(ManagementEvent.animal_id == id)
+     )
+     res = await db.execute(query)
+     events = res.scalars().all()
+
+     return [
+          ManagementEventHistory(
+               id=event.id,
+               type_name=event.type.type_name,  
+               management_date=event.management_date,
+               description=event.description,
+               photo_url=event.photo_url,
+          )
+          for event in events
+     ]

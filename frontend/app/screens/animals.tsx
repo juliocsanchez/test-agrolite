@@ -34,7 +34,7 @@ export default function Animals() {
   if (loading) {
     return (
       <View className="flex-1 items-center justify-center bg-white">
-        <ActivityIndicator size="large" color="#10b981" />
+        <ActivityIndicator size="large" color="#black" />
       </View>
     );
   }
@@ -57,7 +57,7 @@ export default function Animals() {
         <AnimalsCard
           code={item.code}
           specie={item.species}
-          href="/forms/history"
+          id = {item.id}
         />
       )}
       ListEmptyComponent={
