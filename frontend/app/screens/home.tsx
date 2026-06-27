@@ -1,6 +1,5 @@
-import { Text, View } from "react-native";
+import { View } from "react-native";
 import Card from "@/components/cards_create";
-import AnimalsCard from "@/components/cards_animal";
 
 export default function Index() {
   return (
@@ -11,6 +10,7 @@ export default function Index() {
           title="Cadastrar Animal"
           description="Adicione um novo bovino ao sistema"
           color="black"
+          href="/forms/animal_forms"
         />
 
         <Card
@@ -18,6 +18,7 @@ export default function Index() {
           title="Manejo"
           description="Cadastre um novo manejo"
           color="black"
+          href="/forms/management_forms"
         />
 
         <Card
@@ -25,6 +26,7 @@ export default function Index() {
           title="Tipo de manejo"
           description="Cadastre um novo tipo de manejo"
           color="black"
+          href="/forms/type_forms"
         />
       </View>
     </View>

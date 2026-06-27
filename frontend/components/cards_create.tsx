@@ -1,12 +1,14 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { FontAwesome6 } from "@expo/vector-icons";
 import "../global.css";
+import { router, Href } from "expo-router";
 
 interface CardProps {
   iconName: keyof typeof FontAwesome6.glyphMap;
   title: string;
   description: string;
   color: string;
+  href: Href;
 }
 
 export default function Card({
@@ -14,9 +16,12 @@ export default function Card({
   title,
   description,
   color,
+  href
 }: CardProps) {
   return (
-    <TouchableOpacity className="flex-start bottom-2 w-1/2 gap-1 rounded-2xl border border-gray-100 bg-white p-5 shadow-md">
+    <TouchableOpacity className="flex-start bottom-2 w-1/2 gap-1 rounded-2xl border border-gray-100 bg-white p-5 shadow-md"
+    onPress={() => router.push(href)}
+    >
       <FontAwesome6 name={iconName} size={60} color={color} />
       <Text className="text-xl font-bold text-gray-800">{title}</Text>
       {description ? (
