@@ -64,7 +64,6 @@ export default function History() {
           management_date={item.management_date}
           management_type_name={item.type_name}
           description={item.description ?? "Sem descrição"}
-          status="Pendente"
         />
       )}
       ListEmptyComponent={
