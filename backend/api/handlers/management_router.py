@@ -3,11 +3,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import APIRouter, Depends
 from core.database.connect import get_bd
 from services.management import ManagementEventService
-from schemas.management_event import ManagementEventBase, ManagementEventResponse
+from schemas.management_event import ManagementEventBase, ManagementEventHistory, ManagementEventResponse
 
 event_router = APIRouter()
 
-@event_router.get("/",summary="Lista manejos cadastrados",response_model=List[ManagementEventResponse])
+@event_router.get("/",summary="Lista manejos cadastrados",response_model=List[ManagementEventHistory])
 async def list_events(db:AsyncSession = Depends(get_bd)):
     return await ManagementEventService.read(db)
 

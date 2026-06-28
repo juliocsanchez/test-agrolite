@@ -76,7 +76,8 @@ class AnimalService:
                id=event.id,
                type_name=event.type.type_name,  
                management_date=event.management_date,
-               description=event.description,
+               description=event.type.description,
+               days_interval=event.type.days_interval,
                photo_url=event.photo_url,
           )
           for event in events

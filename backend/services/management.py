@@ -1,8 +1,9 @@
 from fastapi import HTTPException, status
 from models.management_event import ManagementEvent
-from schemas.management_event import ManagementEventBase, ManagementEventResponse
+from schemas.management_event import ManagementEventBase, ManagementEventHistory, ManagementEventResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import joinedload
 from sqlalchemy import select
 
 class ManagementEventService:
@@ -24,10 +25,27 @@ class ManagementEventService:
                raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,detail="Evento já cadastrado")
                
     @staticmethod
-    async def read(db:AsyncSession):
-         query = select(ManagementEvent)
-         result = await db.execute(query)
-         return result.scalars().all()
+    async def read(db: AsyncSession):
+        query = (
+            select(ManagementEvent)
+            .options(joinedload(ManagementEvent.type))
+            .options(joinedload(ManagementEvent.animal))
+        )
+        result = await db.execute(query)
+        events = result.scalars().all()
+
+        return [
+            ManagementEventHistory(
+                id=event.id,
+                type_name=event.type.type_name,
+                animal_code = event.animal.code,
+                management_date=event.management_date,
+                description=event.type.description,
+                days_interval=event.type.days_interval,
+                photo_url=event.photo_url,
+            )
+            for event in events
+    ]
         
     @staticmethod
     async def update(db:AsyncSession,id:int,event: ManagementEventBase):
