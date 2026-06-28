@@ -1,5 +1,5 @@
 import { Tabs } from "expo-router";
-import { FontAwesome, FontAwesome6, MaterialIcons } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome6, MaterialIcons ,Ionicons } from "@expo/vector-icons";
 
 export default function ScreensLayout() {
   return (
@@ -14,7 +14,7 @@ export default function ScreensLayout() {
           height: 60,
           paddingBottom: 8,
         },
-        headerShown: false,
+        headerShown: true,
       }}
     >
       <Tabs.Screen
@@ -42,6 +42,14 @@ export default function ScreensLayout() {
           tabBarIcon: ({ color, size }) => (
             <FontAwesome name="calendar" size={size} color={color} />
           ),
+        }}
+      />
+       <Tabs.Screen
+        name="stats"
+        options={{
+          title: "Dados",
+          tabBarIcon: ({ color, size }) => (
+          <Ionicons name="analytics-outline" size={size} color={color} />),
         }}
       />
     </Tabs>
