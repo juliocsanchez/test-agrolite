@@ -1,6 +1,6 @@
 import SelectModal from "@/components/modalSelect";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { useEffect, useState } from "react";
 import {
   ScrollView,
@@ -20,7 +20,6 @@ const schema = z.object({
     .number({ error: "Selecione um animal" })
     .min(1, "Selecione um animal"),
   management_date: z.string().min(1, "Data obrigatória"),
-  description: z.string().optional(),
   photo_url: z.string().optional(),
 });
 
@@ -36,6 +35,8 @@ export default function ManagementForms() {
   const [animals, setAnimals] = useState<Option[]>([]);
   const [loadingOptions, setLoadingOptions] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [usedAnimalIds, setUsedAnimalIds] = useState<number[]>([]);
+  const [loadingAnimals, setLoadingAnimals] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -69,6 +70,33 @@ export default function ManagementForms() {
     },
   });
 
+  const selectedTypeId = useWatch({ control, name: "type_id" });
+
+  useEffect(() => {
+    if (!selectedTypeId) {
+      setUsedAnimalIds([]);
+      return;
+    }
+
+    setLoadingAnimals(true);
+    fetch(`${API_URL}/management/`)
+      .then((r) => r.json())
+      .then((data: any[]) => {
+        if (Array.isArray(data)) {
+          const ids = data
+            .filter((e) => e.type_id === selectedTypeId)
+            .map((e) => e.animal_id);
+          setUsedAnimalIds(ids);
+        }
+      })
+      .catch(() => setUsedAnimalIds([]))
+      .finally(() => setLoadingAnimals(false));
+
+    reset((data) => ({ ...data, animal_id: 0 }));
+  }, [selectedTypeId]);
+
+  const availableAnimals = animals.filter((a) => !usedAnimalIds.includes(a.id));
+
   const onSubmit = async (data: FormData) => {
     setSubmitting(true);
     try {
@@ -76,7 +104,7 @@ export default function ManagementForms() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
-      }); 
+      });
 
       if (!res.ok) {
         const errBody = await res.json();
@@ -135,8 +163,14 @@ export default function ManagementForms() {
             <SelectModal
               value={value ?? null}
               onChange={onChange}
-              options={animals}
-              placeholder="Selecione o animal"
+              options={availableAnimals}
+              placeholder={
+                loadingAnimals
+                  ? "Carregando..."
+                  : availableAnimals.length === 0
+                    ? "Todos os animais já possuem esse manejo"
+                    : "Selecione o animal"
+              }
               error={errors.animal_id?.message}
             />
           )}
@@ -168,27 +202,6 @@ export default function ManagementForms() {
             {errors.management_date.message}
           </Text>
         )}
-
-        <Text className="mb-1 mt-3 text-sm font-semibold text-gray-700">
-          Descrição{" "}
-          <Text className="font-normal text-gray-400">(opcional)</Text>
-        </Text>
-        <Controller
-          control={control}
-          name="description"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              className="mb-1 rounded-xl border border-gray-200 px-4 py-3"
-              placeholder="Observações..."
-              multiline
-              numberOfLines={3}
-              textAlignVertical="top"
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-        />
 
         <TouchableOpacity
           className={`mt-6 items-center rounded-xl py-4 ${submitting ? "bg-gray-400" : "bg-black"}`}

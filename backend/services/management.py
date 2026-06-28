@@ -37,6 +37,8 @@ class ManagementEventService:
         return [
             ManagementEventHistory(
                 id=event.id,
+                type_id = event.type.id,
+                animal_id= event.animal.id,
                 type_name=event.type.type_name,
                 animal_code = event.animal.code,
                 management_date=event.management_date,

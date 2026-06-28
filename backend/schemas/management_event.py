@@ -13,6 +13,8 @@ class ManagementEventBase(BaseModel):
 class ManagementEventHistory(BaseModel):
 
     id: int
+    type_id: int       
+    animal_id: int 
     type_name: str
     animal_code : str
     management_date: datetime.date
