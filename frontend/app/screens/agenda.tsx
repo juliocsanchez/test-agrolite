@@ -108,7 +108,7 @@ export default function ManegementCalendar() {
         return res.json();
       })
       .then((data) => setEvents(Array.isArray(data) ? data : []))
-      .catch((err) => setError(err))
+      .catch((err) => setError(err?.message ?? "Erro ao buscar manejos"))
       .finally(() => setLoading(false));
   }, []);
 
