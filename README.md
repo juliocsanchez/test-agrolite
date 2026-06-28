@@ -110,7 +110,7 @@ O ngrok exibirá uma URL pública no formato `https://xxxx-xxxx.ngrok-free.app`.
 
 ---
 
-### Frontend
+### Frontend (cd frontend/)
 
 **1. Configure a URL da API**
 
