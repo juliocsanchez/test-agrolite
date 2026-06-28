@@ -160,7 +160,7 @@ Escaneie o QR code com o aplicativo **Expo Go** (disponível na App Store e Goog
 
 ### Frontend
 
-- O app conta com **4 telas principais**: cadastro de animal, tipos de manejo, manejo do animal e agenda.
+- O app conta com **4 telas principais**: cadastros(animal,tipo de manejo e manejo) animais(que ao clicar vai para o histórico), agenda, dados.
 - Os formulários utilizam **react-hook-form** com validação via **Zod**, garantindo uma experiência de preenchimento robusta e com feedback em tempo real.
 - A tela de animais exibe os manejos associados e, ao clicar em um animal, apresenta datas, tipos e descrições dos manejos realizados.
 - Na **tela de agenda**, foi utilizado `react-native-calendar` com lógica de dependências e datas previstas, onde:
