@@ -76,7 +76,7 @@ export default function ManagementForms() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
-      });
+      }); 
 
       if (!res.ok) {
         const errBody = await res.json();

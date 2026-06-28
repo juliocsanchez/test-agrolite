@@ -54,11 +54,7 @@ export default function Animals() {
       data={animals}
       keyExtractor={(item) => String(item.id)}
       renderItem={({ item }) => (
-        <AnimalsCard
-          code={item.code}
-          specie={item.species}
-          id = {item.id}
-        />
+        <AnimalsCard code={item.code} specie={item.species} id={item.id} />
       )}
       ListEmptyComponent={
         <View className="flex-1 items-center justify-center">

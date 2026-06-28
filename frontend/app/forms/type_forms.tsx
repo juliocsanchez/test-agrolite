@@ -2,6 +2,9 @@ import { View, Text, TextInput, TouchableOpacity, Switch } from "react-native";
 import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { API_URL } from "../constants/api";
+import { router } from "expo-router";
+import { useState } from "react";
 
 const schema = z
   .object({
@@ -23,6 +26,8 @@ const schema = z
 type FormData = z.infer<typeof schema>;
 
 export default function NewType() {
+  const [submitting, setSubmitting] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -34,14 +39,29 @@ export default function NewType() {
 
   const isRecurrent = useWatch({ control, name: "is_recurrent" });
 
-  const onSubmit = (data: FormData) => {
-    const payload = {
-      ...data,
-      days_interval:
-        data.is_recurrent == false ? null : Number(data.days_interval),
-      description: data.description == "" ? null : data.description,
-    };
-    console.log(payload);
+  const onSubmit = async (data: FormData) => {
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${API_URL}/type/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!res.ok) {
+        const errBody = await res.json();
+        throw new Error(
+          `Erro ao salvar tipo de manejo: ${JSON.stringify(errBody)}`,
+        );
+      }
+
+      router.replace("/screens/home");
+      alert("Manejo salvo com suceso!");
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -130,10 +150,13 @@ export default function NewType() {
       )}
 
       <TouchableOpacity
-        className="mt-4 items-center rounded-xl bg-black py-4"
+        className={`mt-6 items-center rounded-xl py-4 ${submitting ? "bg-gray-400" : "bg-black"}`}
         onPress={handleSubmit(onSubmit)}
+        disabled={submitting}
       >
-        <Text className="font-bold text-white">Salvar</Text>
+        <Text className="font-bold text-white">
+          {submitting ? "Salvando..." : "Salvar"}
+        </Text>
       </TouchableOpacity>
     </View>
   );
