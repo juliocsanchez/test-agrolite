@@ -1,6 +1,6 @@
 from typing import List
 from fastapi import APIRouter, Depends
-from schemas.management_event import ManagementEventHistory
+from schemas.management_event import ManagementEventAnimalHistory, ManagementEventHistory
 from schemas.animal import AnimalCreate,AnimalResponse, AnimalUpdate
 from sqlalchemy.ext.asyncio import AsyncSession
 from services.animal_service import AnimalService
@@ -12,7 +12,7 @@ animal_router = APIRouter()
 async def list_animals(db: AsyncSession = Depends(get_bd)):
     return await AnimalService.read(db)
 
-@animal_router.get("/history/{id}", summary="Lista de manejos por animal",response_model=List[ManagementEventHistory])
+@animal_router.get("/history/{id}", summary="Lista de manejos por animal",response_model=List[ManagementEventAnimalHistory])
 async def get_history(id:int,db: AsyncSession = Depends(get_bd)):
     return await AnimalService.history(db,id)
 

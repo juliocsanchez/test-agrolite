@@ -1,5 +1,5 @@
 from fastapi import HTTPException, status
-from schemas.management_event import ManagementEventHistory
+from schemas.management_event import ManagementEventAnimalHistory, ManagementEventHistory
 from models.management_event import ManagementEvent
 from models.animal import Animal
 from schemas.animal import AnimalCreate, AnimalUpdate
@@ -72,7 +72,7 @@ class AnimalService:
      events = res.scalars().all()
 
      return [
-          ManagementEventHistory(
+          ManagementEventAnimalHistory(
                id=event.id,
                type_name=event.type.type_name,  
                management_date=event.management_date,
