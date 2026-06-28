@@ -27,7 +27,7 @@ Aplicação mobile para gestão de rebanhos, com controle de animais, tipos de m
 
 ---
 
-### Backend
+### Backend (cd backend/)
 
 **1. Crie e ative o ambiente virtual**
 
