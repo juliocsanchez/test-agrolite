@@ -7,7 +7,7 @@ class ManagementType(Base):
     __tablename__= 'management_type'
 
     id  = Column(Integer,primary_key=True,autoincrement=True)
-    type_name =  Column(String(100), nullable=False)
+    type_name =  Column(String(100), nullable=False,unique=True)
     is_recurrent = Column(Boolean, nullable=False)
     description = Column(String(150),nullable=True) 
     days_interval = Column(Integer,nullable=True)

@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import List, Optional
 import datetime
 
 class ManagementEventBase(BaseModel):
@@ -34,6 +34,18 @@ class ManagementEventAnimalHistory(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ManagementStatsByType(BaseModel):
+    type_name : str
+    count: int
+
+
+class ManagementStatsResponse(BaseModel):
+    total_animals: int
+    animals_up_to_date:int
+    percent_up_to_date:float
+    by_type : List[ManagementStatsByType]
+
 
 class ManagementEventResponse(ManagementEventBase):
     id: int
